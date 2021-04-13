@@ -3,7 +3,7 @@ class PipelineEngine():
     def __init__(self,pipes,verbose=False):
         self._pipes = pipes
         self._verbose = verbose
-        self._context = None
+        self._context = {}
 
     def process(self):
         print(f"[INFO] Starting Pipeline with {len(self._pipes)} pipes")
@@ -14,6 +14,7 @@ class PipelineEngine():
                 pipe.done()
                 if '_res' in self._context:
                     print(f"  [RESULT] -> {self._context['_res']}")
+                    del self._context['_res']
                 
             except Exception as e:
                 raise e

@@ -5,29 +5,12 @@ from src.pipes.utils import TransformDataFrameColumn,TransformDataFrame,LoadData
 from src.pipes.openie import OpenIE
 from src.pipes.encoders import BasicTextEncoder
 from src.pipes.ml import MultiLayerPerceptron
+from src.pipes.visualization import TimeSeries
 
 PipelineEngine([
-    TwitterCrawler(
-        _keyword='Microsoft',
-        _since='2013-01-01',
-        _until='2019-01-01',
-        _lang='en',
-        _from=['CNN','cnnbrk','nytimes','BBCBreaking','TheEconomist'],
-        _df='tweets',
-        _csv='tweets'
-    ),
-    TransformDataFrameColumn(
-        _transformation=RemoveLinks(),
-        _df='tweets',
-        _column='content'
-    ),
-    TransformDataFrame(
-        _transformation=OpenIE(_keyword='Microsoft'),
-        _df='tweets'
-    ),
-    TransformDataFrame(
-        _transformation=BasicTextEncoder(),
-        _df='tweets'
+    LoadDataFrame(
+        _name="embbeded_tweets.csv",
+        _alias='tweets'
     ),
     TransformDataFrameColumn(
         _transformation=ToDatetime(),
@@ -54,8 +37,20 @@ PipelineEngine([
         _out='_data'
     ),
     MultiLayerPerceptron(
-        _x_labels=['subject','object','relation'],
-        _y_labels=['close'],
+        _x_labels=['subject','object','relation','open','high','low','close','volume'],
+        _y_labels=['class'],
+        _df='_data',
+        _hidden_layer_sizes=(100,50)
+    ),
+    MultiLayerPerceptron(
+        _x_labels=['subject','object','relation','open','high','low','close','volume'],
+        _y_labels=['class'],
+        _df='_data',
+        _hidden_layer_sizes=(50,25)
+    ),
+    MultiLayerPerceptron(
+        _x_labels=['open','high','low','close','volume'],
+        _y_labels=['class'],
         _df='_data',
         _hidden_layer_sizes=(100,50)
     ),

@@ -45,7 +45,7 @@ class LoadDataFrame(Pipe):
     __name__ = "Data Frame Loader"
     __kwargs__ = {
         '_name' : {'required':True},
-        '_alias' : {'required':False,'default':None}
+        '_alias' : {'required':True}
     }
 
     def __init__(self,**kwargs):
