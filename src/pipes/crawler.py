@@ -9,7 +9,7 @@ import concurrent.futures
 class TwitterCrawler(Pipe):
 
     __name__ = "Twitter Crawler"
-    __kwargs__ ={
+    __kwargs__ = {
         '_keyword' : {'required':True},
         '_until': {'required':False,'default':None},
         '_since': {'required':False,'default':None},
@@ -38,7 +38,7 @@ class TwitterCrawler(Pipe):
             sliced_scraped_tweets = itertools.islice(scraped_tweets,self._limit)
             
         df = pd.DataFrame(sliced_scraped_tweets)
-
+        print(df)
         if self._csv:
             df.to_csv(self._csv + '.csv', index=True,)
 

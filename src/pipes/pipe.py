@@ -3,6 +3,9 @@ import sys
 import time
 from ..colors import bcolors
 
+"""
+Abstract class that must be inherited by all pipes. Provides common functionality across pipes.
+"""
 class Pipe():
 
     __metaclass__ = ABCMeta

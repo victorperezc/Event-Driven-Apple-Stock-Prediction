@@ -3,11 +3,13 @@ import contextlib
 from openie import StanfordOpenIE
 import pandas as pd
 from nltk.corpus import wordnet as wn
+
 class OpenIE(Pipe):
     
     __name__ = "Open Information Extraction"
     __kwargs__ = {
         '_keyword' : {'required':True},
+        '_csv': {'required':False,'default':None}
     }
 
     def __init__(self,**kwargs):
@@ -33,6 +35,10 @@ class OpenIE(Pipe):
                     if len(triples):
                         sorted(triples, key=lambda x: len(x['object']))
                         structured_tweets.append(triples[-1])
+        df = pd.DataFrame(data=structured_tweets).drop_duplicates(subset=['subject','relation','object'])
 
-        x = {'_data': pd.DataFrame(data=structured_tweets).drop_duplicates(subset=['subject','relation','object'])}
+        if self._csv:
+            df.to_csv(self._csv,index=False)
+
+        x = {'_data': df}
         return x

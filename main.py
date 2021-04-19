@@ -3,14 +3,32 @@ from src.pipes.preprocessing import RemoveLinks
 from src.pipes.crawler import TwitterCrawler,CrawlerThreadExecutor
 from src.pipes.utils import TransformDataFrameColumn,TransformDataFrame,LoadDataFrame,SaveDataFrameToCsv,JoinDataFrame,ToDatetime
 from src.pipes.openie import OpenIE
-from src.pipes.encoders import BasicTextEncoder
+from src.pipes.encoders import BasicTextEncoder,TfIdf
 from src.pipes.ml import MultiLayerPerceptron
 from src.pipes.visualization import TimeSeries
 
 PipelineEngine([
-    LoadDataFrame(
-        _name="embbeded_tweets.csv",
-        _alias='tweets'
+    TwitterCrawler(
+        _keyword='Microsoft',
+        _since='2010-01-01',
+        _until='2019-01-01',
+        _lang='en',
+        _from=['CNN','cnnbrk','nytimes','BBCBreaking','TheEconomist'],
+        _df='tweets',
+        _csv='tweets'
+    ),
+    TransformDataFrameColumn(
+        _transformation=RemoveLinks(),
+        _df='tweets',
+        _column='content'
+    ),
+    TransformDataFrame(
+        _transformation=OpenIE(_keyword='Microsoft',_csv='embedded_tweets.csv'),
+        _df='tweets',
+    ),
+    TransformDataFrame(
+        _transformation=TfIdf(_csv='encoded_tweets.csv'),
+        _df='tweets'
     ),
     TransformDataFrameColumn(
         _transformation=ToDatetime(),

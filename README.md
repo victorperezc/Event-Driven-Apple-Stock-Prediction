@@ -9,10 +9,35 @@ pip3 install -r requirements.txt
 ```
 
 # Use Case
-We provide with a use case to predict Stock Prices with structured event embbedings using Open Information Extraction.
+We provide with a use case to predict Microsoft Stock Prices with structured event embbedings using Open Information Extraction. You can run this by running the `main.py` file as
+
+```
+python3 main.py
+```
 
 # Dependencies
 * pandas and numpy: To handle data frames operations
 * OpenIE : Open IE to extract structured events from text
 * snscrape : To scrape information from the web
+
+
+# File structure
+```
++-- src
+|   +-- pipes
+|   |   +-- crawler.py 
+|   |   +-- encoders.py
+|   |   +-- ml.py
+|   |   +-- openie.py
+|   |   +-- pipe.py
+|   |   +-- preprocessing.py
+|   |   +-- sentiment.py
+|   |   +-- utils.py
+|   |   +-- visualization.py
+|   +-- colors.py
+|   +-- engine.py
++-- README.md
++-- main.py
++-- requirements.txt
+```
 
